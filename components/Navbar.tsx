@@ -11,8 +11,34 @@ const menuItems = [
   { name: 'Contact Us', href: '#contact' },
 ];
 
+function useActiveSection(sections: string[]) {
+  const [activeSection, setActiveSection] = useState('');
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            setActiveSection(entry.target.id);
+          }
+        });
+      },
+      { threshold: 0.5 }
+    );
+
+    sections.forEach((section) => {
+      const element = document.getElementById(section);
+      if (element) observer.observe(element);
+    });
+
+    return () => observer.disconnect();
+  }, [sections]);
+
+  return activeSection;
+}
+
 const Navbar = () => {
-  const [selected, setSelected] = useState<string>('home');
+  const activeSection = useActiveSection(['home', 'services', 'about', 'contact']);
   const [showNavbar, setShowNavbar] = useState<boolean>(true);
   const [lastScrollY, setLastScrollY] = useState<number>(0);
 
@@ -31,10 +57,6 @@ const Navbar = () => {
       window.removeEventListener('scroll', handleScroll);
     };
   }, [lastScrollY]);
-
-  const handleSelection = (item: string) => {
-    setSelected(item);
-  };
 
   return (
     <AnimatePresence>
@@ -58,8 +80,8 @@ const Navbar = () => {
           <ul className="flex justify-center items-center gap-9 flex-grow text-lg relative">
             {menuItems.map((item) => (
               <li key={item.name} className="relative">
-                <a href={item.href} onClick={() => handleSelection(item.name.toLowerCase())}>{item.name}</a>
-                {selected === item.name.toLowerCase() && (
+                <a href={item.href}>{item.name}</a>
+                {activeSection === item.href.slice(1) && (
                   <motion.div
                     layoutId="underline"
                     className="absolute left-0 right-0 bottom-0 h-1 bg-[#FBB040]"

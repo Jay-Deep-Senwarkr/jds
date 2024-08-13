@@ -38,14 +38,14 @@ const Welcome = () => {
   }, [typedRef]);
 
   return (
-    <div className="text-7xl font-bold flex flex-col pt-[10%] pl-[5%] border-red-500 border-2 h-[93dvh] w-[50%]">
-      <div>Welcome to</div>
+    <div className="text-7xl font-bold flex flex-col pt-[10%] pl-[5%]  h-[95dvh] w-[50%]" id="home">
+      <div>Welcome! to</div>
       <div>
         <p className="text-[#FBB040]">
           Jan Dhan <span className="text-[#8DC63F]">Solutions</span>
         </p>
         <p className="text-3xl text-gray-400">
-          We provide <span className="" ref={typedRef}></span>
+          Your one stop solution for <span className="" ref={typedRef}></span>
         </p>
       </div>
     </div>
